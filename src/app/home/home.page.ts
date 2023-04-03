@@ -22,11 +22,15 @@ export class HomePage {
 
   constructor(private apiService: ApiService, private alertController: AlertController) { }
 
-  cadastra() {
+
+
+  consultarCep() {
     this.apiService.getCep(this.cepValue).subscribe((data) => {
       this.cepInfo = data;
     });
+  }
 
+  cadastra() {
     if (cpf.isValid(this.cpfDigitado)) {
       this.cpfInvalido = false;
       this.presentAlert(); // Chama o modal quando o CPF for válido
@@ -81,4 +85,20 @@ export class HomePage {
     this.cpfInvalido = false;
     this.cpfValido = false;
   }
+
+  formatCep() {
+    if (this.cepValue.length === 5) {
+      this.cepValue += '-';
+    }
+  }
+
+  formatCpf() {
+    if (this.cpfDigitado.length === 3 || this.cpfDigitado.length === 7) {
+      this.cpfDigitado += '.';
+    } else if (this.cpfDigitado.length === 11) {
+      this.cpfDigitado += '-';
+    }
+  }
+
+
 }

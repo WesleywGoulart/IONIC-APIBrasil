@@ -16,20 +16,24 @@
     <ion-list>
       <ion-item>
         <ion-label>CPF</ion-label>
-        <ion-input type="text" [(ngModel)]="cpfDigitado"></ion-input>
-        <ng-container *ngIf="cpfInvalido; else cpfValido">
-          <ion-text color="danger">
-            CPF inválido.
-          </ion-text>
+        <ion-input type="text" [(ngModel)]="cpfDigitado" (ngModelChange)="formatCpf()" maxlength="14"></ion-input>
+        <ng-container *ngIf="cpfDigitado && cpfDigitado.length === 14; else cpfNaoDigitado">
+          <ng-container *ngIf="cpfInvalido; else cpfValido">
+            <ion-text color="danger">
+              CPF inválido.
+            </ion-text>
+          </ng-container>
+
+          <ng-template #cpfValido>
+            <ion-text color="success">
+              CPF válido.
+            </ion-text>
+          </ng-template>
         </ng-container>
 
-        <ng-template #cpfValido>
-          <ion-text color="success">
-            CPF válido.
-          </ion-text>
-        </ng-template>
-
+        <ng-template #cpfNaoDigitado></ng-template>
       </ion-item>
+
 
       <ion-item>
         <ion-label>Nome: </ion-label>
@@ -48,9 +52,11 @@
 
       <ion-item>
         <ion-label>CEP: </ion-label>
-        <ion-input type="text" [(ngModel)]="cepValue"></ion-input>
+        <ion-input type="text" (ionChange)="formatCep()" [(ngModel)]="cepValue" maxlength="9"></ion-input>
+        <ion-button slot="end" (click)="consultarCep()">Consultar</ion-button>
       </ion-item>
-      <ion-card *ngIf="cepInfo">
+      
+      <ion-card>
         <ion-item>
           <ion-label>Logradouro:</ion-label>
           <ion-input type="text">{{cepInfo.street}}</ion-input>
